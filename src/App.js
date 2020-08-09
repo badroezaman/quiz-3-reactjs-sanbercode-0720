@@ -1,14 +1,15 @@
 import React from "react";
-import "./App.css";
+import "./assets/css/theme.css";
 
-import UserInfo from "./UserInfo";
-import Header from "./Header";
+import { BrowserRouter as Router } from "react-router-dom";
+import Routes from "./components/Routes";
 
 function App() {
   return (
     <div className="App">
-      <Header />
-      <UserInfo />
+      <Router>
+        <Routes />
+      </Router>
     </div>
   );
 }
