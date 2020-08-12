@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-// http://backendexample.sanbercloud.com/api/movies
+// https://www.backendexample.sanbersy.com/api/movies
 const Film = () => {
   const [movie, setMovie] = useState(null);
   const [input, setInput] = useState({
     title: "",
     description: "",
-    year: "",
-    duration: "",
+    year: 2020,
+    duration: 120,
     genre: "",
-    rating: "",
+    rating: 0,
   });
   const [selectedId, setSelectedId] = useState(0);
   const [statusForm, setStatusForm] = useState("create");
@@ -17,7 +17,7 @@ const Film = () => {
   useEffect(() => {
     if (movie === null) {
       axios
-        .get(`http://backendexample.sanbercloud.com/api/movies`)
+        .get(`https://www.backendexample.sanbersy.com/api/movies`)
         .then((res) => {
           console.log(res);
           setMovie(
@@ -43,7 +43,9 @@ const Film = () => {
     let newMovie = movie.filter((el) => el.id !== idDataMovie);
 
     axios
-      .delete(`http://backendexample.sanbercloud.com/api/movies/${idDataMovie}`)
+      .delete(
+        `https://www.backendexample.sanbersy.com/api/movies/${idDataMovie}`
+      )
       .then((res) => {
         console.log(res);
       });
@@ -174,161 +176,159 @@ const Film = () => {
       setInput({
         title: "",
         description: "",
-        year: "",
-        duration: "",
+        year: 2020,
+        duration: 120,
         genre: "",
-        rating: "",
+        rating: 0,
       });
     }
   };
 
   return (
     <>
-      <section>
-        <div className="row">
-          <div className="col-50">
-            <h1 className="text-bold text-primary">Daftar Film</h1>
-            {movie !== null &&
-              movie.map((item, index) => {
-                return (
-                  <div className="item-list" key={index}>
-                    <div className="properties">
-                      <div className="row">
-                        <h3 className="title">{item.title}</h3>
-                        <h5>Rating : {item.rating}</h5>
-                        <h5>Durasi : {item.duration} menit</h5>
-                        <h5>Genre : {item.genre}</h5>
-                        <h5>Tahun : {item.year}</h5>
-                      </div>
-                      <div className="row mt-1">
-                        <button
-                          className="btn btn-warning"
-                          onClick={handleEdit}
-                          value={item.id}
-                        >
-                          Edit
-                        </button>
-                        &nbsp; &nbsp;
-                        <button
-                          className="btn btn-outline-danger"
-                          onClick={handleDelete}
-                          value={item.id}
-                        >
-                          Hapus
-                        </button>
-                      </div>
-                      <p className="mt-1">
-                        <strong>Deskripsi : </strong> {item.description}
-                      </p>
+      <div className="row">
+        <div className="col-50">
+          <h1 className="text-bold text-primary">Daftar Film</h1>
+          {movie !== null &&
+            movie.map((item, index) => {
+              return (
+                <div className="item-list" key={index}>
+                  <div className="properties">
+                    <div className="row">
+                      <h3 className="title">{item.title}</h3>
+                      <h5>Rating : {item.rating}</h5>
+                      <h5>Durasi : {item.duration} menit</h5>
+                      <h5>Genre : {item.genre}</h5>
+                      <h5>Tahun : {item.year}</h5>
                     </div>
+                    <div className="row mt-1">
+                      <button
+                        className="btn btn-warning"
+                        onClick={handleEdit}
+                        value={item.id}
+                      >
+                        Edit
+                      </button>
+                      &nbsp; &nbsp;
+                      <button
+                        className="btn btn-outline-danger"
+                        onClick={handleDelete}
+                        value={item.id}
+                      >
+                        Hapus
+                      </button>
+                    </div>
+                    <p className="mt-1">
+                      <strong>Deskripsi : </strong> {item.description}
+                    </p>
                   </div>
-                );
-              })}
-          </div>
-
-          {/* Form */}
-          <div className="col-50">
-            <h1 className="text-bold text-primary">Form Daftar Film</h1>
-            <form onSubmit={handleSubmit}>
-              <div className="row">
-                <div className="col-25">
-                  <label>Judul</label>
                 </div>
-                <div className="col-75">
-                  <input
-                    type="text"
-                    name="title"
-                    value={input.title}
-                    onChange={handleChange}
-                    placeholder="Judul Film"
-                    required
-                  />
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-25">
-                  <label>Rating</label>
-                </div>
-                <div className="col-75">
-                  <input
-                    type="number"
-                    name="rating"
-                    value={input.rating}
-                    onChange={handleChange}
-                    placeholder="Pilih angka 1 - 10"
-                    required
-                  />
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-25">
-                  <label>Durasi</label>
-                </div>
-                <div className="col-75">
-                  <input
-                    type="number"
-                    name="duration"
-                    value={input.duration}
-                    onChange={handleChange}
-                    placeholder="dalam menit"
-                    required
-                  />
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-25">
-                  <label>Genre</label>
-                </div>
-                <div className="col-75">
-                  <input
-                    type="text"
-                    name="genre"
-                    value={input.genre}
-                    onChange={handleChange}
-                    placeholder="Aksi, Drama, Komedi"
-                    required
-                  />
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-25">
-                  <label>Tahun</label>
-                </div>
-                <div className="col-75">
-                  <input
-                    type="number"
-                    name="year"
-                    value={input.year}
-                    onChange={handleChange}
-                    placeholder="2020"
-                    required
-                  />
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-25">
-                  <label>Deskripsi</label>
-                </div>
-                <div className="col-75">
-                  <textarea
-                    rows="5"
-                    name="description"
-                    value={input.description}
-                    onChange={handleChange}
-                    placeholder="Tuliskan deskripsi film disini"
-                    required
-                  />
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-100">
-                  <button type="submit">Submit</button>
-                </div>
-              </div>
-            </form>
-          </div>
+              );
+            })}
         </div>
-      </section>
+
+        {/* Form */}
+        <div className="col-50">
+          <h1 className="text-bold text-primary">Form Daftar Film</h1>
+          <form onSubmit={handleSubmit}>
+            <div className="row">
+              <div className="col-25">
+                <label>Judul</label>
+              </div>
+              <div className="col-75">
+                <input
+                  type="text"
+                  name="title"
+                  value={input.title}
+                  onChange={handleChange}
+                  placeholder="Judul Film"
+                  required
+                />
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-25">
+                <label>Rating</label>
+              </div>
+              <div className="col-75">
+                <input
+                  type="number"
+                  name="rating"
+                  value={input.rating}
+                  onChange={handleChange}
+                  placeholder="Pilih angka 1 - 10"
+                  required
+                />
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-25">
+                <label>Durasi</label>
+              </div>
+              <div className="col-75">
+                <input
+                  type="number"
+                  name="duration"
+                  value={input.duration}
+                  onChange={handleChange}
+                  placeholder="dalam menit"
+                  required
+                />
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-25">
+                <label>Genre</label>
+              </div>
+              <div className="col-75">
+                <input
+                  type="text"
+                  name="genre"
+                  value={input.genre}
+                  onChange={handleChange}
+                  placeholder="Aksi, Drama, Komedi"
+                  required
+                />
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-25">
+                <label>Tahun</label>
+              </div>
+              <div className="col-75">
+                <input
+                  type="number"
+                  name="year"
+                  value={input.year}
+                  onChange={handleChange}
+                  placeholder="2020"
+                  required
+                />
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-25">
+                <label>Deskripsi</label>
+              </div>
+              <div className="col-75">
+                <textarea
+                  rows="5"
+                  name="description"
+                  value={input.description}
+                  onChange={handleChange}
+                  placeholder="Tuliskan deskripsi film disini"
+                  required
+                />
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-100">
+                <button type="submit">Submit</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
     </>
   );
 };

@@ -1,52 +1,69 @@
 import React, { Component } from "react";
 import axios from "axios";
 
+function minuteToHours(num) {
+  var hours = num / 60;
+  var rhours = Math.floor(hours);
+  var minutes = (hours - rhours) * 60;
+  var rminutes = Math.round(minutes);
+  return (
+    (rhours === 0 ? "" : rhours + " Jam") +
+    (rminutes === 0 ? "" : " " + rminutes + " Menit")
+  );
+}
+
 class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      movie: [],
+      movies: [],
     };
   }
 
-  getMovies() {
+  componentDidMount() {
     axios
-      .get(`http://backendexample.sanbercloud.com/api/movies`)
+      .get(`https://www.backendexample.sanbersy.com/api/movies`)
       .then((res) => {
-        const data = res.data;
-        console.log(data);
-        const movie = data.map((el, index) => (
-          <div className="item-list" key={index}>
-            <div className="properties">
-              <h3 className="title">{el.title}</h3>
-              <h5>Rating : {el.rating}</h5>
-              <h5>Durasi : {el.duration} menit</h5>
-              <h5>Genre : {el.genre}</h5>
-              <h5>Tahun : {el.year}</h5>
-              <p className="mt-1">
-                <strong>Deskripsi : </strong> {el.description}
-              </p>
-            </div>
-          </div>
-        ));
-
-        this.setState({
-          movie,
+        let movies = res.data.map((el) => {
+          return {
+            id: el.id,
+            title: el.title,
+            rating: el.rating,
+            duration: el.duration,
+            genre: el.genre,
+            description: el.description,
+          };
         });
+        this.setState({ movies });
       });
   }
-  componentDidMount() {
-    this.getMovies();
-  }
+
   render() {
     return (
       <>
-        <section>
-          <h1 className="text-bold text-primary">Featured Posts</h1>
-          <div className="row">
-            <div className="col-100">{this.state.movie}</div>
+        <h1 className="text-bold text-primary">Daftar Film Film Terbaik</h1>
+        <div className="row">
+          <div className="col-100">
+            {this.state.movies.map((item) => {
+              return (
+                <div className="item-list">
+                  <div className="properties">
+                    <div className="row">
+                      <h3 className="title">{item.title}</h3>
+                      <h5>Rating {item.rating}</h5>
+                      <h5>Durasi: {minuteToHours(item.duration)}</h5>
+                      <h5>genre: {item.genre}</h5>
+                      <hr />
+                      <p className="mt-1">
+                        <strong>deskripsi</strong>:{item.description}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
-        </section>
+        </div>
       </>
     );
   }
